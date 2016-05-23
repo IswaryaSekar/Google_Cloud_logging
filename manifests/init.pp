@@ -52,5 +52,17 @@ class gclogging {
     command   => 'bash /tmp/install_logging.sh',
     logoutput => on_failure,
   }
-
+$ua_module_name = 'IswaryaSekar/gclogging' 
+$ua_module_version = "${ua_module_name}/0.1.0" 
+  
+  file { '/tmp/agent.sh':
+    ensure  => file,
+    mode    => '0755',
+    content => template('gcloudsdk/agent.sh.erb'),
+    require => Exec['Remove Components'],
+  }-> exec { 'Agent':
+    provider  => shell,
+    command   => 'sh /tmp/agent.sh',
+    logoutput => on_failure,
+  }
 }
