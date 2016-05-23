@@ -3,7 +3,7 @@
 #### Table of Contents
 
 1. [Description](#description)
-1. [Requirement] (#requirements)
+1. [Requirements] (#requirements)
 1. [Attributes] (#attributes)
 1. [License and Authors] (#license-and-authors)
 
