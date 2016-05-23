@@ -44,16 +44,16 @@
 #
 class gclogging {
  file { '/tmp/install_logging.sh':
-    ensure  => 'present',
-    mode    => '0644',
-    source => "puppet:///modules/gclogging/install_logging.sh"
+    ensure => 'present',
+    mode   => '0644',
+    source => 'puppet:///modules/gclogging/install_logging.sh'
   }-> exec { 'Install Logging Agent':
     provider  => shell,
     command   => 'bash /tmp/install_logging.sh',
     logoutput => on_failure,
   }
-$ua_module_name = 'IswaryaSekar/gclogging' 
-$ua_module_version = "${ua_module_name}/0.1.0" 
+$ua_module_name = 'IswaryaSekar/gclogging'
+$ua_module_version = "${ua_module_name}/0.1.0"
   
   file { '/tmp/agent.sh':
     ensure  => file,
