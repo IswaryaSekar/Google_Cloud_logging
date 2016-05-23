@@ -3,9 +3,9 @@
 #### Table of Contents
 
 1. [Description](#description)
-1. [Requirement] (#Requirement)
-1. [Attributes] (#Attributes)
-1. [License and Authors] (#License and Authors)
+1. [Requirement] (#requirement)
+1. [Attributes] (#attributes)
+1. [License and Authors] (#license-and-authors)
 
 ## Description
 
