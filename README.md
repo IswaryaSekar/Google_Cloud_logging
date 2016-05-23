@@ -3,14 +3,9 @@
 #### Table of Contents
 
 1. [Description](#description)
-1. [Setup - The basics of getting started with gclogging](#setup)
-    * [What gclogging affects](#what-gclogging-affects)
-    * [Setup requirements](#setup-requirements)
-    * [Beginning with gclogging](#beginning-with-gclogging)
-1. [Usage - Configuration options and additional functionality](#usage)
-1. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
-1. [Limitations - OS compatibility, etc.](#limitations)
-1. [Development - Guide for contributing to the module](#development)
+1. [Requirement]
+1. [Attributes]
+1. [License and Authors]
 
 ## Description
 
