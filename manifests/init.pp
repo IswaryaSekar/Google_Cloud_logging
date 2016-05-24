@@ -58,8 +58,8 @@ $ua_module_version = "${ua_module_name}/0.1.0"
   file { '/tmp/agent.sh':
     ensure  => file,
     mode    => '0755',
-    content => template('gcloudsdk/agent.sh.erb'),
-    require => Exec['Remove Components'],
+    content => template('gclogging/agent.sh.erb'),
+    require => Exec['Install Logging Agent'],
   }-> exec { 'Agent':
     provider  => shell,
     command   => 'sh /tmp/agent.sh',
