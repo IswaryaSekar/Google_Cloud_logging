@@ -1,0 +1,21 @@
+HOSTS:
+    debian-wheezy:
+        roles:
+         - master
+        platform: debian-7-x64
+        image: debian:wheezy-backports
+        hypervisor: docker
+        docker_cmd: ['/sbin/init']
+        docker_preserve_image: true
+        docker_image_commands:
+         - apt-get install -y wget ca-certificates
+         - wget --no-check-certificate https://apt.puppetlabs.com/puppetlabs-release-pc1-wheezy.deb
+         - dpkg -i puppetlabs-release-pc1-wheezy.deb
+         - apt-get update
+         - apt-get install -y ssh
+         - apt-get -y install puppet curl ntpdate git ruby
+         - "sed --in-place=.bak 's/without-password/yes/' /etc/ssh/sshd_config"
+CONFIG:
+  log_level: verbose
+  type: foss
+
