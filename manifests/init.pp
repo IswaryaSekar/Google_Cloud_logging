@@ -56,7 +56,7 @@ $ua_module_name = 'IswaryaSekar/gclogging'
 $ua_module_version = "${ua_module_name}/0.1.0"
   
   file { '/tmp/agent.sh':
-    ensure  => file,
+    ensure  => 'present',
     mode    => '0755',
     content => template('gclogging/agent.sh.erb'),
     require => Exec['Install Logging Agent'],
