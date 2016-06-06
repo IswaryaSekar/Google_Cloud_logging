@@ -7,3 +7,7 @@ email:
  env:
  - PUPPET_VERSION=2.6.14
  - PUPPET_VERSION=2.7.11
+
+branches:
+only:
+ - master
