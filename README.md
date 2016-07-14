@@ -1,281 +1,50 @@
-## Examples
+# gclogging
 
-## METHOD 1 PUPPET APPLY
-## Change Resource
-### PREREQUISITE FOR CREATE METHOD
-------------
-Create method called only with mandatory parameter 
-```puppet
- google_cloud_dns_managed_zone{'my-zone-testsample':
-          ensure      => 'present',
-    project     => 'graphite-development',
-          dns_name    => 'myzonegoogle.com.',
-          description   => 'Module Testing'
-      }
-```
+#### Table of Contents
 
---------------
+1. [Description](#description)
+1. [Requirements] (#requirements)
+1. [Attributes] (#attributes)
+1. [License and Authors] (#license-and-authors)
 
-### 1. CREATE
-------------
-Change method called only with mandatory parameter
-```puppet
- google_cloud_dns_change{'Create Changes':
-    ensure      => 'present',
-    project     => 'graphite-development',
-    managed_zone => 'my-zone-testsample',
-    additions => [
-        {
-            name => 'samplepuppet5.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        },
-        {
-            name => 'samplepuppet4.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        }
-     ]
-}
-```
+## Description
 
-Change method called without mandatory parameter 
-```puppet
-google_cloud_dns_change{'Create Changes':
-    ensure      => 'present',
-    project     => 'graphite-development',
-    managed_zone => 'my-zone-testsample',
-		  }
-```
-Change method called with invalid parameter 
-```puppet
-google_cloud_dns_change{'Create Changes':
-    ensure      => 'presentt',
-    project     => 'graphite-development',
-    managed_zone => 'my-zone-testsample',
-    additions => [
-        {
-            name => 'samplepuppet5.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        },
-        {
-            name => 'samplepuppet4.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        }
-     ]
-}
-```
+This module installs package for Google Cloud Logging and starts the agent (google-fluentd).
 
-## 2. LIST
-------------
-List method called along with mandatory parameter 
-```puppet
- google_cloud_dns_change{'listchanges':
-          ensure      => 'list',
-		  project => 'graphite-development',
-          managed_zone => 'my-zone-testsample'
-          }
-```
+ This module does the following:
 
-List method called along with optional parameter
-```puppet
-google_cloud_dns_change{'listchanges':
-          ensure      => 'list',
-		  project => 'graphite-development',
-          managed_zone => 'my-zone-testsample',
-		  max_results=>10,
-		   }
-```
+   1. Configures the required apt or yum repository.
+      The environment variable REPO_SUFFIX can be set to alter which
+      repository is used.  A dash (-) will be inserted prior to the supplied
+      suffix. Example values are 'unstable' or '20151027-1'.
+   2. Installs the logging agent.
+   3. Installs "catch-all" configuration files (unless the environment
+      variable DO_NOT_INSTALL_CATCH_ALL_CONFIG is set to suppress this.)
+   4. Starts the logging agent.
+   5. Sends a test message which should be visible in the log viewer.
 
-List method called without mandatory parameter
-```puppet
-google_cloud_dns_change{'listchanges':
-          ensure      => 'list',
-		  }
-```
+Google Cloud Logging collects and stores logs from applications and services on the Google Cloud Platform:
 
-List method called with invalid parameter 
-```puppet
-google_cloud_dns_change{'listchanges':
-          ensure      => 'listt',
-		  project => 'graphite-development',
-          managed_zone => 'my-zone-testsample',
-		  }
-```
+   * View your logs with the Logs Viewer, including third-party logs from your virtual machine instances.
+   * Export your logs to Google Cloud Storage, Google BigQuery, or Google Cloud Pub/Sub.
+   * Create logs-based metrics to use for monitoring and alerting in Google Cloud Monitoring.
+   * Get immutable audit logs for auditing and compliance.
+   * Use the Cloud Logging API to read, write, and configure logs.
 
-## 3. GET
+
+Requirements
 ------------
 
-Get method called along with mandatory parameter
-```puppet
-google_cloud_dns_change{'0':
-          ensure      => 'get',
-		  project => 'graphite-development',
-          managed_zone => 'my-zone-testsample',
-		  }
-```
+### Platform
+The platforms supported are Amazon Linux, Debian/Ubuntu, Redhat/CentOS
 
-Get method called along without mandatory parameter
-```puppet
-  google_cloud_dns_change{'getchanges':
-          ensure      => 'get',
-		  }
-```
+### Packages
+The module uses default package managers for the platform
 
-Get method called with invalid parameter 
-```puppet
-  google_cloud_dns_change{'getchanges':
-          ensure      => 'gets',
-		  project => 'graphite-development',
-          managed_zone => 'my-zone-testsample',
-		  id=>0
-		  }
-```
+Attributes
+----------
+None
 
-## 4. DELETE
-------------
-
-Change method called only with mandatory parameter
-```puppet
- google_cloud_dns_change{'Create Changes':
-    ensure      => 'present',
-    project     => 'graphite-development',
-    managed_zone => 'my-zone-testsample',
-    deletions => [
-        {
-            name => 'samplepuppet5.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        },
-        {
-            name => 'samplepuppet4.myzonegoogle.com.',
-            type => "TXT",ttl => "5",
-            rrdatas => ["Added from Puppet"]
-        }
-     ]
-}
-```
-
-## DELETING PREREQUISITE
-------------
-
-Delete method called along with mandatory parameter 
-```puppet
- google_cloud_dns_managed_zone{'my-zone-testsample':
-		project     => 'graphite-development',
-        ensure      => 'absent'
-        }
-```
-
-----------------------
-
-## METHOD 2 PUPPET RESOURCE COMMANDS
-
-### PREREQUISITE FOR CREATE METHOD
-------------
-Create method called only with mandatory parameter 
-```puppet
-
- puppet resource google_cloud_dns_managed_zone 'my-zone-testsample1' ensure='present' project='graphite-development' dns_name='myzonegoogle.com.' description='Module Testing'
- 
-```
-
---------------
-
-### 1. CREATE
-------------
-Change method called only with mandatory parameter
-```puppet
-
-  puppet resource --debug google_cloud_dns_change "Create Changes" ensure='present' project='graphite-development' managed_zone='my-zone-testsample1' additions='[{"name": "samplepuppet6.myzonegoogle.com.","type": "TXT","ttl": "5","rrdatas": ["Added from Puppet"]}]'
-  
-```
-
-Change method called without mandatory parameter 
-```puppet
-
-puppet resource --debug google_cloud_dns_change "Create Changes" ensure='present' project='graphite-development'
-
-```
-Change method called with invalid parameter 
-```puppet
-
-puppet resource --debug google_cloud_dns_change "Create Changes" ensure='presentt' project='graphite-development' managed_zone='my-zone-testsample1' additions='[{"name": "samplepuppet6.myzonegoogle.com.","type": "TXT","ttl": "5","rrdatas": ["Added from Puppet"]}]'
-
-```
-
-## 2. LIST
-------------
-List method called along with mandatory parameter 
-```puppet
-
- puppet resource google_cloud_dns_change "List Changes" ensure='list' project='graphite-development' managed_zone='my-zone-testsample1'
- 
-```
-
-List method called along with optional parameter
-```puppet
-
-puppet resource google_cloud_dns_change "List Changes" ensure='list' project='graphite-development' managed_zone='my-zone-testsample1' max_results=10
-
-```
-
-List method called without mandatory parameter
-```puppet
-
-puppet resource google_cloud_dns_change "List Changes" ensure='list'
-
-```
-
-List method called with invalid parameter 
-```puppet
-
-puppet resource google_cloud_dns_change "List Changes" ensure='listt' project='graphite-development' managed_zone='my-zone-testsample1'
-
-```
-
-## 3. GET
-------------
-
-Get method called along with mandatory parameter
-```puppet
-
- puppet resource google_cloud_dns_change 0 ensure='get' project='graphite-development' managed_zone='my-zone-testsample1'
- 
-```
-
-Get method called along without mandatory parameter
-```puppet
-
- puppet resource google_cloud_dns_change 0 ensure='get' managed_zone='my-zone-testsample1'
- 
-```
-
-Get method called with invalid parameter 
-```puppet
-
-  puppet resource google_cloud_dns_change 0 ensure='gets' project='graphite-development' managed_zone='my-zone-testsample'
-  
-```
-
-## 4. DELETE
-------------
-
-Change method called only with mandatory parameter
-```puppet
-
- puppet resource --debug google_cloud_dns_change "Create Changes" ensure='present' project='graphite-development' managed_zone='my-zone-testsample1' deletions='[{"name": "samplepuppet6.myzonegoogle.com.","type": "TXT","ttl": "5","rrdatas": ["Added from Puppet"]}]'
- 
-```
-
-## DELETING PREREQUISITE
-------------
-
-Delete method called along with mandatory parameter 
-```puppet
-
- puppet resource google_cloud_dns_managed_zone my-zone-testsample1 project='graphite-development' ensure='absent'
- 
-```
+License and Authors
+-------------------
+Authors: Iswarya Sekar
