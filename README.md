@@ -1,56 +1,107 @@
 ## Examples
 
 ## METHOD 1 PUPPET APPLY
-## Project Resource
+## ResourceRecordSet Resource
+### PREREQUISITE FOR LIST METHOD
+------------
+Create method called only with mandatory parameter 
+```puppet
+ google_cloud_dns_managed_zone{'my-zone-testsample':
+          ensure      => 'present',
+    project     => 'graphite-development',
+          dns_name    => 'myzonegoogle.com.',
+          description   => 'Module Testing'
+      }
+```
 
-## 1. GET
+when change method called only with mandatory parameter
+```puppet
+ google_cloud_dns_change{'Create Changes':
+    ensure      => 'present',
+    project     => 'graphite-development',
+    managed_zone => 'my-zone-testsample',
+    additions => [
+        {
+            name => 'samplepuppet5.myzonegoogle.com.',
+            type => "TXT",ttl => "5",
+            rrdatas => ["Added from Puppet"]
+        },
+        {
+            name => 'samplepuppet4.myzonegoogle.com.',
+            type => "TXT",ttl => "5",
+            rrdatas => ["Added from Puppet"]
+        }
+     ]
+}
+```
+
+## 1. LIST
+------------
+List method called along with mandatory parameter 
+```puppet
+ google_cloud_dns_resource_record_set{'myzonegoogle.com.':
+		project     => 'graphite-development',
+          ensure      => 'list',
+		  managed_zone    => 'my-zone-testsample'
+		  }
+```
+
+List method called along with optional parameter
+```puppet
+google_cloud_dns_resource_record_set{'myzonegoogle.com.':
+		project     => 'graphite-development',
+          ensure      => 'list',
+		  managed_zone    => 'my-zone-testsample',
+		  max_results => 10,
+		   }
+}
+```
+
+List method called without mandatory parameter
+```puppet
+ google_cloud_dns_resource_record_set{'my-zone-testsample':
+	  ensure      => 'list',
+		  }
+```
+
+List method called with invalid parameter 
+```puppet
+google_cloud_dns_resource_record_set{'my-zone-testsample':
+		project     => 'graphite-development',
+          ensure      => 'lists',
+		  max_results => 10,
+		  page_token  => 'my-zone-testsample'
+		  }
+```
+
+## DELETING PREREQUISITE
 ------------
 
-Get method called along with mandatory parameter
+when change method called only with mandatory parameter
 ```puppet
-google_cloud_dns_project{'graphite-development':
-          ensure      => 'get'
-          }
+google_cloud_dns_change{'Create Changes':
+    ensure      => 'present',
+    project     => 'graphite-development',
+    managed_zone => 'my-zone-testsample',
+    deletions => [
+        {
+            name => 'samplepuppet5.myzonegoogle.com.',
+            type => "TXT",ttl => "5",
+            rrdatas => ["Added from Puppet"]
+        },
+        {
+            name => 'samplepuppet4.myzonegoogle.com.',
+            type => "TXT",ttl => "5",
+            rrdatas => ["Added from Puppet"]
+        }
+     ]
+}
 ```
 
-Get method called along without mandatory parameter
+Delete method called along with mandatory parameter 
 ```puppet
- google_cloud_dns_project{'graphite-development':
-              }
+ google_cloud_dns_managed_zone{'my-zone-testsample':
+		project     => 'graphite-development',
+        ensure      => 'absent'
+        }
 ```
-
-Get method called with invalid parameter 
-```puppet
- google_cloud_dns_project{'graphite-development':
-		ensure      => 'gets'
-              }
-```
-
-----------------------
-
-## METHOD 2 PUPPET RESOURCE COMMANDS
-
-## 3. GET
-------------
-
-Get method called along with mandatory parameter
-```puppet
-
-puppet resource google_cloud_dns_project 'graphite-development' ensure='get'
-
-```
-
-Get method called along without mandatory parameter
-```puppet
-
-puppet resource google_cloud_dns_project ensure='get'
- 
-```
-
-Get method called with invalid parameter 
-```puppet
-
-puppet resource google_cloud_dns_project 'graphite-development' ensure='gets'
-  
-```
-
