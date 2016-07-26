@@ -41,7 +41,7 @@ Note that the following assumes you have already created Google Account (https:/
 ## Requirements
 
 * [google-api-ruby-client](https://github.com/google/google-api-ruby-client) ruby gem
-* Ruby 2.x, google-api-ruby-client won't work with 1.8.7 or 1.9.x
+* Ruby 2.x, google-api-ruby-client
 * Puppet 3.x and 4.x
 
 ## Installing the google_cloud_dns module
@@ -94,50 +94,34 @@ Create action handles the following:
 This will create a new managed zone named 'simplezone' with resource record sets
 
 ```Puppet
-google_cloud_dns{'Cloud DNS': //Title (Any String)
+google_cloud_dns{'my-zone-testsample':  
     ensure => 'present',
-    project => 'graphite-development', //Optional, By default should read from gcloud config
-    zones => [   //Supports Creation of multiple zones
-            {
-            name => 'simple-zone',
-            dns_name => 'mygoogle.com.',
+    project => 'graphite-development',
+    zone =>  
+         {
+            dns_name => 'myzonegoogle.com.',
             description => 'testing description',
-            name_server_set => 'ns-cloud-d1.googledomains.com.', //Optional
             resource_record_sets => {
                 additions => [
                     {
-                        name => 'samplepuppet1.mygoogle.com.',
+                        name => 'samplepuppet1.myzonegoogle.com.',
                         type => "A",
                         ttl => "5",
                         rrdatas => ['1.0.0.0']
                     }
-                ],
-                deletions => [
-                    {
-                        name => 'samplepuppet2.mygoogle.com.',
-                        type => "A",
-                        ttl => "5",
-                        rrdatas => ['0.0.0.0']
-                    }
                 ]
-                }
-            }
-        ]
-    }
+				}}
+				}
     
 ```
 
 This will delete the resource record set 
 
 ```Puppet
-google_cloud_dns 'Cloud DNS' do
-        action :delete
-        project 'graphite-development'
-        zones [   //Supports deletion of multiple zones
-          {name => 'simple-zone'},
-          {name => 'simple-zone2'}    
-        ]
-    end
+google_cloud_dns{'my-zone-testsample':
+        ensure => 'absent',
+        project => 'graphite-development',
+        }
     
 ```
 
@@ -159,47 +143,31 @@ Example for manage google_cloud_dns resources
 
 ```Puppet
 
-google_cloud_dns "simplezone" do //Zone Name will act as a name var
-	project "graphite-development" //optional, By default should read from gcloud config
-	action :manage
-	  zone {
-            "dns_name" => "mygoogle.com.",
-            "description" => "testing description",
-            "resource_record_sets" => {
-                "additions" => [
-                
+google_cloud_dns{'my-zone-testsample':  
+    ensure => 'present',
+    project => 'graphite-development', 
+    zone =>  
+         {
+            dns_name => 'myzonegoogle.com.',
+            description => 'testing description',
+            resource_record_sets => {
+                additions => [
                     {
-                       "name" => "samplechef3.mygoogle.com.",
-                       "type" => "A",
-                       "ttl" => "10",
-                       "rrdatas" => ["1.1.0.0"]
-                    },
-                    
-					{
-                       "name" => "samplechef1.mygoogle.com.",
-                       "type" => "A",
-                       "ttl" => "500",
-                       "rrdatas" => ["1.0.0.0"]
-                    }
-                ],
-                "deletions" => [
-                
-                    {
-                        "name" => "samplechef3.mygoogle.com.",
-                        "type" => "A",
-                        "ttl" => "10",
-                        "rrdatas" => ["1.1.0.0"]
+                        name => 'samplepuppet1.myzonegoogle.com.',
+                        type => "A",
+                        ttl => "5",
+                        rrdatas => ['0.0.0.0']
                     }
                 ]
-			}
-		}
-end
+                }
+            }
+}
     
 ```
 
-### MODIFY   
+### UPDATE   
 
-Modify action handles the following:
+Update action handles the following:
 
 * Add Resource Record Set
 * Update Resource Record Set
