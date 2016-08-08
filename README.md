@@ -3,6 +3,8 @@
 ## Debugger Debuggee Resource
 ### 1. REGISTER
 ------------
+Registers the debuggee with the controller service.
+
 Create method called only with mandatory parameter 
 ```puppet
 google_cloud_debugger_debuggee {'Register Debugee':
@@ -16,6 +18,8 @@ agent_version => "google.com/gcp-java/v1.1"
 
 ## 2. LIST
 ------------
+Lists all the debuggees that the user can set breakpoints to.
+
 List method called along with mandatory parameter 
 ```puppet
 google_cloud_debugger_debuggee{'List ':
@@ -28,7 +32,9 @@ project     => 'graphite-development',
 
 ## 1. UPDATE
 ------------
-List method called along with mandatory parameter 
+Updates the breakpoint state.
+
+Update method called along with mandatory parameter 
 ```puppet
 google_cloud_debugger_active_breakpoint {'538dc3a713839-d9eb-c7028':
 ensure => 'update',
@@ -41,7 +47,9 @@ line => 32
 
 ## 3. LIST
 ------------
-Get method called along with mandatory parameter
+Returns the list of all active breakpoints for the debuggee.
+
+List method called along with mandatory parameter
 ```puppet
 google_cloud_debugger_active_breakpoint {'list active breakpoint':
 ensure => 'list',
@@ -52,7 +60,9 @@ debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d',
 ## Debugger Breakpoint
 ### 1. SET
 ------------
-Create method called only with mandatory parameter 
+Sets the breakpoint to the debuggee.
+
+Set method called only with mandatory parameter 
 ```puppet
 google_cloud_debugger_breakpoint {'Set breakpoint':
 ensure => 'present',
@@ -63,6 +73,8 @@ client_version => "google.com/intellij/v1"
 
 ## 2. LIST
 ------------
+Lists all breakpoints for the debuggee.
+
 List method called along with mandatory parameter 
 ```puppet
 google_cloud_debugger_breakpoint {'list breakpoint':
@@ -74,6 +86,8 @@ client_version => "google.com/intellij/v1"
 
 ## 3. GET
 ------------
+Gets breakpoint information.
+
 Get method called along with mandatory parameter
 ```puppet
 google_cloud_debugger_breakpoint {'538dc3a713839-d9eb-c7028':
@@ -83,6 +97,8 @@ client_version => "google.com/intellij/v1",
 ```
 ## 4. DELETE
 ------------
+Deletes the breakpoint from the debuggee.
+
 Delete method called along without mandatory parameter 
 ```puppet
 google_cloud_debugger_breakpoint {'123':
