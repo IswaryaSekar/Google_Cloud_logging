@@ -1,158 +1,275 @@
 ## Examples
 ## PUPPET APPLY
-## Debugger Debuggee Resource
-### 1. REGISTER
+## ProjectLog Resource
+### 1. WRITE
 ------------
-Registers the debuggee with the controller service.
+Writes log entries to Stackdriver Logging. All log entries are written by this method.
 
 Create method called only with mandatory parameter 
 ```puppet
-google_cloud_debugger_debuggee {'Register Debugee':
-ensure => 'register',
+google_cloud_logging_project_log{'testname':
+ensure => "write",
 project => "graphite-development",
-uniquifier => "graphite-development/1",
-description => "testing register method",
-agent_version => "google.com/gcp-java/v1.1"
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+Create method called without mandatory parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "write",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+Create method called with invalid parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "writes",
+project => "graphite-development",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+## 2. LIST
+------------
+Lists the monitored resource descriptors used by Stackdriver Logging.
+
+List method called along with mandatory parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "list",
+project => "graphite-development",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+List method called without mandatory parameter
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "list",
+project => "graphite-development",
+}
+```
+List method called with invalid parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "lists",
+project => "graphite-development",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+## 3. DELETE
+------------
+Deletes a log and all its log entries. The log will reappear if it receives new entries.
+
+Delete method called along with mandatory parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "delete",
+project => "graphite-development",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "global" }
+}]
+}
+```
+Delete method called along without mandatory parameter 
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "delete",
+        }
+```
+Delete method called with invalid parameter
+```puppet
+google_cloud_logging_project_log{'testname':
+ensure => "delete",
+project => "graphite-development",
+entries => [{
+textPayload => "testing log entry",
+resource=> {
+type => "" }
+}]
+}
+```
+## ProjectMetric Resource
+### 1. CREATE
+------------
+Creates a logs-based metric.
+
+Create method called only with mandatory parameter 
+```puppet
+google_cloud_logging_project_metric{'my_metric':
+ensure => "present",
+parent => "projects/graphite-development",
+description => "test descriptions",
+filter => " logName:syslog AND severity>=ERROR"
 }
 ```
 
 ## 2. LIST
 ------------
-Lists all the debuggees that the user can set breakpoints to.
+Lists logs-based metrics.
 
 List method called along with mandatory parameter 
 ```puppet
-google_cloud_debugger_debuggee{'List ':
-ensure      => 'list',
-project     => 'graphite-development',
-}
-```
-
-## Debugger Debuggee Active Breakpoint
-
-## 1. UPDATE
-------------
-Updates the breakpoint state.
-
-Update method called along with mandatory parameter 
-```puppet
-google_cloud_debugger_active_breakpoint {'538dc3a713839-d9eb-c7028':
-ensure => 'update',
-debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d',
-location => {
-line => 32
-}
-}
-```
-
-## 3. LIST
-------------
-Returns the list of all active breakpoints for the debuggee.
-
-List method called along with mandatory parameter
-```puppet
-google_cloud_debugger_active_breakpoint {'list active breakpoint':
-ensure => 'list',
-debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d', 
-}
-```
-
-## Debugger Breakpoint
-### 1. SET
-------------
-Sets the breakpoint to the debuggee.
-
-Set method called only with mandatory parameter 
-```puppet
-google_cloud_debugger_breakpoint {'Set breakpoint':
-ensure => 'present',
-debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d',
-client_version => "google.com/intellij/v1"
-}
-```
-
-## 2. LIST
-------------
-Lists all breakpoints for the debuggee.
-
-List method called along with mandatory parameter 
-```puppet
-google_cloud_debugger_breakpoint {'list breakpoint':
-ensure => 'list',
-debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d',
-client_version => "google.com/intellij/v1"
+google_cloud_logging_project_metric{'my_metric':
+ensure => "list",
+parent => "projects/graphite-development",
+description => "test descriptions",
+filter => " logName:syslog AND severity>=ERROR"
 }
 ```
 
 ## 3. GET
 ------------
-Gets breakpoint information.
+Gets a logs-based metric.
 
 Get method called along with mandatory parameter
 ```puppet
-google_cloud_debugger_breakpoint {'538dc3a713839-d9eb-c7028':
-ensure => 'get',
-client_version => "google.com/intellij/v1",
+google_cloud_logging_project_metric{'my_metric':
+ensure => "get",
+parent => "projects/graphite-development",
+description => "test descriptions",
+filter => " logName:syslog AND severity>=ERROR"
 }
 ```
 ## 4. DELETE
 ------------
-Deletes the breakpoint from the debuggee.
+Deletes a logs-based metric.
 
-Delete method called along without mandatory parameter 
+Delete method called along with mandatory parameter 
 ```puppet
-google_cloud_debugger_breakpoint {'123':
-ensure => 'absent',
-debuggee_id => 'gcp:994996842918:5520b6c6188f9f2d',
-client_version => "google.com/intellij/v1"
-    }
+google_cloud_logging_project_metric{'my_metric':
+ensure => "absent",
+parent => "projects/graphite-development",
+description => "test descriptions",
+filter => " logName:syslog AND severity>=ERROR"
+}
+```
+## ProjectSink Resource
+### 1. CREATE
+------------
+Creates a sink.
+
+Create method called only with mandatory parameter 
+```puppet
+google_cloud_logging_project_sink{'my_sink':
+ensure => "present",
+destination => "storage.googleapis.com/unit_acceptance_dont_delete",
+parent => "projects/graphite-development",
+filter => "logName:syslog AND severity>=ERROR",
+output_version_format => "V2",
+}
+```
+
+## 2. LIST
+------------
+Lists sinks.
+
+List method called along with mandatory parameter 
+```puppet
+google_cloud_logging_project_sink{'my_sink':
+ensure => "list",
+parent => "projects/graphite-development",
+}
+```
+
+## 3. GET
+------------
+Gets a sink.
+
+Get method called along with mandatory parameter
+```puppet
+google_cloud_logging_project_sink{'my_sink':
+ensure => "get",
+parent => "projects/graphite-development",
+}
+```
+## 4. DELETE
+------------
+Deletes a sink.
+
+Delete method called along with mandatory parameter 
+```puppet
+google_cloud_logging_project_sink{'my_sink':
+ensure => "absent",
+parent => "projects/graphite-development",
+output_version_format => "V2",
 }
 ```
 ----------------------
 
 ## METHOD 2 PUPPET RESOURCE COMMANDS
-## Debugger Debuggee Resource
-### 1. REGISTER
+## ProjectMetric Resource
+### 1. CREATE
 ------------
 Create method called only with mandatory parameter 
 ```puppet
-puppet resource google_cloud_debugger_debuggee "Register Debugee" ensure='register' project='graphite-development' uniquifier='graphite-development/1' description='testing register method' agent_version='google.com/gcp-java/v1.1'
+puppet resource google_cloud_logging_project_metric 'my_metric1' ensure='present' parent='projects/graphite-development' description='test description' filter='logName:syslog AND severity>=ERROR'
+ 
 ```
-
 ## 2. LIST
 ------------
 List method called along with mandatory parameter 
 ```puppet
-puppet resource google_cloud_debugger_debuggee "List" ensure='list' project='graphite-development'
+puppet resource google_cloud_logging_project_metric 'my_metric1' ensure='list' parent='projects/graphite-development' description='test description' filter='logName:syslog AND severity>=ERROR'
 ```
-
-## Debugger Debuggee Active Breakpoint
-
-## 1. LIST
+## 3. GET
 ------------
-List method called along with mandatory parameter
+Get method called along with mandatory parameter
 ```puppet
-puppet resource google_cloud_debugger_active_breakpoint "list active breakpoint" ensure='list' debuggee_id='gcp:994996842918:5520b6c6188f9f2d'
-
+puppet resource google_cloud_logging_project_metric 'my_metric1' ensure='get' parent='projects/graphite-development' description='test description' filter='logName:syslog AND severity>=ERROR'
 ```
-## Debugger Breakpoint
-### 1. SET
-------------
-Set method called only with mandatory parameter 
-```puppet
-puppet resource google_cloud_debugger_breakpoint "Set Breakpoint" ensure='present' debuggee_id='gcp:994996842918:5520b6c6188f9f2d' client_version='google.com/intellij/v1'
-```
-
-## 2. LIST
-------------
-List method called along with mandatory parameter 
-```puppet
-puppet resource google_cloud_debugger_breakpoint "list breakpoint" ensure='list' debuggee_id='gcp:994996842918:5520b6c6188f9f2d' client_version='google.com/intellij/v1'
-```
-
 ## 4. DELETE
 ------------
-Delete method called along without mandatory parameter 
+Delete method called along with mandatory parameter 
 ```puppet
-puppet resource google_cloud_debugger_breakpoint '123' ensure='absent' client_version='google.com/intellij/v1'
+puppet resource google_cloud_logging_project_metric 'my_metric1' ensure='absent' parent='projects/graphite-development' description='test description' filter='logName:syslog AND severity>=ERROR'
+ 
+```
+
+## ProjectSink Resource
+### 1. CREATE
+------------
+Create method called only with mandatory parameter 
+```puppet
+puppet resource google_cloud_logging_project_sink 'my_sink1' ensure='present' destination='storage.googleapis.com/container_gcp' parent='projects/graphite-development' filter='logName:syslog AND severity>=ERROR' output_version_format='V2'
+ 
+```
+## 2. LIST
+------------
+List method called along with mandatory parameter 
+```puppet
+puppet resource google_cloud_logging_project_sink 'my_sink1' ensure='list' parent='projects/graphite-development'
+```
+## 3. GET
+------------
+Get method called along with mandatory parameter
+```puppet
+puppet resource google_cloud_logging_project_sink 'my_sink1' ensure='get' parent='projects/graphite-development'
+```
+## 4. DELETE
+------------
+Delete method called along with mandatory parameter 
+```puppet
+ puppet resource google_cloud_logging_project_sink 'my_sink1' ensure='absent' parent='projects/graphite-development' output_version_format='V2'
+ 
 ```
