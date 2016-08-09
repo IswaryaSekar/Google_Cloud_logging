@@ -1,4 +1,4 @@
-## Examples
+## Manual TestCases
 
 # Setup
 # Installing the google_cloud_debugger module
@@ -12,15 +12,15 @@ Install the required gems with this command:
     gem install google-api-client --no-ri --no-rdoc
     gem install inifile
     
+Steps to Run Acceptance TestCases:
+
+    $ git clone <repo url>
+    $ cd <local repo path>
+    $ bundle install
+    $ sudo BEAKER_set=ubuntu_16_LTR_LTP  bundle exec rspec spec/acceptance
+    
 # Resources and Providers
-## Steps to follow for running the examples:
 
-puppet apply "EXAMPLE.PP"
-
-```
-puppet apply debugger_debugee_register.pp
-
-```
 ## PUPPET APPLY
 ## Debugger Debuggee Resource
 ### 1. REGISTER
